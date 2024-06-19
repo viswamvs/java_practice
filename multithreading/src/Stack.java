@@ -16,10 +16,10 @@ public class Stack {
         return stackTop > array.length - 1;
     }
 
-    public synchronized boolean push(int element){
-        synchronized (this){
+    public synchronized  boolean push(int element){
+
             if( isFull()) return false;
-            stackTop++;
+            ++ stackTop;
 
             try {
                 Thread.sleep(1000);
@@ -27,11 +27,11 @@ public class Stack {
 
             array[stackTop] = element;
             return true;
-        }
+
     }
 
     public synchronized int pop(){
-        synchronized (this){
+
             if (isEmpty()) return Integer.MIN_VALUE;
 
             int element = array[stackTop];
@@ -43,6 +43,6 @@ public class Stack {
 
             stackTop--;
             return element;
-        }
+
     }
 }

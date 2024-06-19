@@ -5,40 +5,36 @@ public class BlockingQueue {
     Queue<Integer> q;
     int capacity;
 
-    BlockingQueue(int cap){
-        q = new LinkedList<>();
+    public BlockingQueue(int cap){
         capacity = cap;
+        q = new LinkedList<>();
     }
 
-    public boolean add(int element){
-        synchronized (q) {
-            while (q.size() == capacity) {
-                try {
-                    q.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+    public boolean add(int element)  {
+        while (q.size() == capacity){
+            try {
+                q.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
-            q.add(element);
-            q.notifyAll();
-            return true;
         }
+
+        q.add(element);
+        q.notifyAll();
+        return true;
     }
 
     public int remove(){
-        synchronized (q) {
-            while (q.size() == 0) {
-                try {
-                    q.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (q.size()==0) {
+            try {
+                q.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
-            int element = q.poll();
-            q.notifyAll();
-            return element;
         }
+
+        int element = q.poll();
+        q.notifyAll();
+        return element;
     }
 }
